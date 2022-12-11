@@ -1,21 +1,24 @@
 package com.example.nest_employee2_app.Controller;
 
 import com.example.nest_employee2_app.dao.EmployeeDao;
+import com.example.nest_employee2_app.dao.TaskDao;
 import com.example.nest_employee2_app.model.Employee;
+import com.example.nest_employee2_app.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class NestController {
 
     @Autowired
     private EmployeeDao dao;
+
+    @Autowired
+    private TaskDao tao;
 
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/empreg",consumes = "application/json",produces = "application/json")
@@ -50,5 +53,24 @@ public class NestController {
 
         return st;
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/addtask",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String> Task(@RequestBody Task t){
+
+        tao.save(t);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/tskview")
+    public List<Map<String,String>> Tskiew()
+    {
+        return (List<Map<String,String>>) tao.complaints();
+    }
+
+
 
 }
